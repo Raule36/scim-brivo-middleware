@@ -17,21 +17,18 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true,
+    "verbatimModuleSyntax": false,
+    "allowJs": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
 
     "paths": {
-      "@domain/*": ["domain/*"],
-
-      "@infra/*": ["infrastructure/*"],
       "@core": ["infrastructure/core"],
       "@config/*": ["infrastructure/config/*"],
-      "@db/*": ["infrastructure/persistence/postgres/*"],
-
-      "@modules/*": ["modules/*"],
-      "@users/*": ["modules/users/*"],
-      "@groups/*": ["modules/groups/*"],
-      "@scim/*": ["modules/scim/*"],
-      "@brivo/*": ["modules/brivo/*"],
-      "@common/*": ["domain/common/*"]
+      "@scim/*": ["scim/*"],
+      "@brivo/*": ["brivo/*"],
+      "@common/*": ["common/*"]
     }
   }
 }

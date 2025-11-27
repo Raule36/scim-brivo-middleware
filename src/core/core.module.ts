@@ -1,6 +1,7 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as bodyParser from 'body-parser';
 
 @Module({})
 export class CoreModule {
@@ -28,5 +29,16 @@ export class CoreModule {
         }),
       ],
     };
+  }
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(
+        bodyParser.json({
+          type: ['application/json', 'application/scim+json'],
+        }),
+        bodyParser.urlencoded({ extended: true }),
+      )
+      .forRoutes('*');
   }
 }

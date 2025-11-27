@@ -4,15 +4,15 @@ services:
     container_name: brivo_scim_db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: brivo_scim
-      POSTGRES_PASSWORD: brivo_scim_password
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
       POSTGRES_DB: brivo_scim
     ports:
       - "5432:5432"
     volumes:
       - brivo_scim_db_data:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U brivo_scim -d brivo_scim"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d brivo_scim"]
       interval: 10s
       timeout: 5s
       retries: 5
