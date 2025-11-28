@@ -18,18 +18,23 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
+import { ScimUserService } from '@scim/application/services/scim-user.service';
+import { ScimExceptionFilter } from '@scim/presentation/filters/scim-exception.filter';
 
-import { ScimExceptionFilter } from '../exceptions/scim-exception.filter';
-import { CreateScimUserDto, ScimListDto, ScimUserDto, UpdateScimUserDto } from '../interfaces/dto';
-import { s_CreateUser } from '../interfaces/schemas';
+import {
+  CreateScimUserDto,
+  ScimUserDto,
+  ScimUserListDto,
+  UpdateScimUserDto,
+} from '../../contracts/dto';
+import { s_CreateUser } from '../../contracts/schemas';
 import { ZodValidationPipe } from '../pipes';
-import { ScimUserService } from '../services/scim-user.service';
 
 @UseFilters(ScimExceptionFilter)
 @UseGuards(ScimBasicAuthGuard)
 @Controller('scim/v2/Users')
-export class ScimUsersController {
-  private readonly logger = new Logger(ScimUsersController.name);
+export class ScimUserController {
+  private readonly logger = new Logger(ScimUserController.name);
 
   constructor(private readonly userService: ScimUserService) {}
 
@@ -39,7 +44,7 @@ export class ScimUsersController {
     @Query('startIndex', new DefaultValuePipe(1), ParseIntPipe) startIndex: number,
     @Query('count', new DefaultValuePipe(100), ParseIntPipe) count: number,
     @Query('filter') filter?: string,
-  ): Promise<ScimListDto> {
+  ): Promise<ScimUserListDto> {
     return this.userService.getAll(startIndex, count, filter);
   }
 

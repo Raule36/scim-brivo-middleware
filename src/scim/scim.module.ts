@@ -1,14 +1,31 @@
 import { BrivoModule } from '@brivo/brivo.module';
 import { ScimBasicAuthGuard } from '@common/guards';
-import { Module, Type } from '@nestjs/common';
-import { ScimBrivoFilterMapper } from '@scim/mappers';
+import { Module } from '@nestjs/common';
 
-import * as controllers from './controllers';
-import { ScimGroupService, ScimUserService } from './services';
+import { GroupProvisioningPort, UserProvisioningPort } from './application/ports';
+import { ScimGroupService, ScimUserService } from './application/services';
+import { BrivoGroupAdapter, BrivoUserAdapter } from './infrastructure';
+import { BrivoFilterMapper, BrivoGroupMapper, BrivoUserMapper } from './infrastructure/mappers';
+import { ScimGroupController, ScimUserController } from './presentation/controllers';
 
 @Module({
   imports: [BrivoModule],
-  controllers: Array.from(Object.values(controllers)) as unknown as Type[],
-  providers: [ScimBasicAuthGuard, ScimUserService, ScimBrivoFilterMapper, ScimGroupService],
+  controllers: [ScimUserController, ScimGroupController],
+  providers: [
+    ScimBasicAuthGuard,
+    ScimUserService,
+    BrivoFilterMapper,
+    ScimGroupService,
+    BrivoUserMapper,
+    BrivoGroupMapper,
+    {
+      provide: UserProvisioningPort,
+      useClass: BrivoUserAdapter,
+    },
+    {
+      provide: GroupProvisioningPort,
+      useClass: BrivoGroupAdapter,
+    },
+  ],
 })
 export class ScimModule {}

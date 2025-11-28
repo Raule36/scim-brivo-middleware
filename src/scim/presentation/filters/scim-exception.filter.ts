@@ -1,8 +1,8 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
+import { ScimException, ScimExceptionBase } from '@scim/application/exceptions/scim-exception';
 import { Response } from 'express';
 
-import { s_ScimException } from '../interfaces/schemas';
-import { ScimException, ScimExceptionBase } from './scim-exception';
+import { s_ScimException } from '../../contracts/schemas';
 
 @Catch(ScimExceptionBase)
 export class ScimExceptionFilter implements ExceptionFilter {

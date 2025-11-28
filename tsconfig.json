@@ -24,7 +24,6 @@
     "noUncheckedIndexedAccess": true,
 
     "paths": {
-      "@core": ["infrastructure/core"],
       "@config/*": ["infrastructure/config/*"],
       "@scim/*": ["scim/*"],
       "@brivo/*": ["brivo/*"],

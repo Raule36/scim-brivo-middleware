@@ -37,10 +37,10 @@ const SCIM_TO_BRIVO_USER_FIELDS: Record<string, ScimToBrivoFieldMapping> = {
 };
 
 @Injectable()
-export class ScimBrivoFilterMapper {
-  private readonly logger = new Logger(ScimBrivoFilterMapper.name);
+export class BrivoFilterMapper {
+  private readonly logger = new Logger(BrivoFilterMapper.name);
 
-  public mapFromString(stringFilter?: string): BrivoFilter {
+  public fromScim(stringFilter?: string): BrivoFilter {
     const brivoFilter = new BrivoFilter();
 
     if (!stringFilter) {

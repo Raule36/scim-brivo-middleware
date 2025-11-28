@@ -17,13 +17,13 @@ import {
 import {
   CreateScimGroupDto,
   ScimGroupDto,
-  ScimListDto,
+  ScimGroupListDto,
   UpdateScimGroupDto,
-} from '@scim/interfaces/dto';
-import { s_CreateGroup, s_Group } from '@scim/interfaces/schemas';
-import { ZodValidationPipe } from '@scim/pipes';
+} from '@scim/contracts/dto';
+import { s_CreateGroup, s_Group } from '@scim/contracts/schemas';
+import { ZodValidationPipe } from '@scim/presentation/pipes';
 
-import { ScimGroupService } from '../services';
+import { ScimGroupService } from '../../application/services';
 
 @Controller('scim/v2/Groups')
 export class ScimGroupController {
@@ -35,7 +35,7 @@ export class ScimGroupController {
     @Query('startIndex', new DefaultValuePipe(1), ParseIntPipe) startIndex: number,
     @Query('count', new DefaultValuePipe(100), ParseIntPipe) count: number,
     @Query('filter') filter?: string,
-  ): Promise<ScimListDto> {
+  ): Promise<ScimGroupListDto> {
     return this.groupService.getAll(startIndex, count, filter);
   }
 

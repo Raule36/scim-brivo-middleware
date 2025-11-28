@@ -1,9 +1,11 @@
 import { BrivoGroupWithMembersDto, CreateBrivoGroupDto } from '@brivo/interfaces/dto';
+import { Injectable } from '@nestjs/common';
 
-import { CreateScimGroupDto, ScimGroupDto, ScimGroupMemberDto } from '../interfaces/dto';
+import { CreateScimGroupDto, ScimGroupDto, ScimGroupMemberDto } from '../../contracts/dto';
 
-export class ScimBrivoGroupMapper {
-  static toScim(brivoGroup: BrivoGroupWithMembersDto): ScimGroupDto {
+@Injectable()
+export class BrivoGroupMapper {
+  public toScim(brivoGroup: BrivoGroupWithMembersDto): ScimGroupDto {
     const groupId = brivoGroup.id.toString();
 
     const members: ScimGroupMemberDto[] = brivoGroup.members
@@ -22,11 +24,11 @@ export class ScimBrivoGroupMapper {
     };
   }
 
-  static toScimList(brivoGroups: BrivoGroupWithMembersDto[]): ScimGroupDto[] {
+  public toScimList(brivoGroups: BrivoGroupWithMembersDto[]): ScimGroupDto[] {
     return brivoGroups.map((group) => this.toScim(group));
   }
 
-  static toCreateBrivo(dto: CreateScimGroupDto): CreateBrivoGroupDto {
+  public toCreateBrivo(dto: CreateScimGroupDto): CreateBrivoGroupDto {
     return {
       name: dto.displayName,
     };

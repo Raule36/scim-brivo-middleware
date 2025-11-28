@@ -1,6 +1,7 @@
 import { BrivoUserDto, CreateBrivoUserDto } from '@brivo/interfaces/dto';
-import { ScimNotFoundException } from '@scim/exceptions/scim-exception';
-import { CreateScimUserDto, ScimUserDto, UpdateScimUserDto } from '@scim/interfaces/dto';
+import { Injectable } from '@nestjs/common';
+
+import { CreateScimUserDto, ScimUserDto, UpdateScimUserDto } from '../../contracts/dto';
 
 type BrivoEmailType = 'Work' | 'Home';
 
@@ -15,10 +16,11 @@ interface BrivoEmail {
   type: BrivoEmailType;
 }
 
-export class ScimBrivoUserMapper {
-  private static readonly DEFAULT_EMAIL_TYPE: BrivoEmailType = 'Work';
+@Injectable()
+export class BrivoUserMapper {
+  private readonly DEFAULT_EMAIL_TYPE: BrivoEmailType = 'Work';
 
-  public static mapBrivoUserToScim(brivo: BrivoUserDto): ScimUserDto {
+  public toScim(brivo: BrivoUserDto): ScimUserDto {
     const emails = brivo.emails.map((email) => ({
       value: email.address ?? '',
       type: this.mapBrivoEmailTypeToScim(email.type),
@@ -48,7 +50,7 @@ export class ScimBrivoUserMapper {
     };
   }
 
-  public static mapCreateScimUserToBrivo(scim: CreateScimUserDto): CreateBrivoUserDto {
+  public toCreateBrivo(scim: CreateScimUserDto): CreateBrivoUserDto {
     const { firstName, lastName, middleName } = this.extractNameFields(scim);
 
     return {
@@ -63,7 +65,7 @@ export class ScimBrivoUserMapper {
     };
   }
 
-  public static mapUpdateScimUserToBrivo(scim: UpdateScimUserDto): Partial<BrivoUserDto> {
+  public toUpdateBrivo(scim: UpdateScimUserDto): Partial<BrivoUserDto> {
     const { firstName, lastName, middleName } = this.extractNameFields(scim);
 
     return {
@@ -76,27 +78,7 @@ export class ScimBrivoUserMapper {
     };
   }
 
-  public static parseBrivoId(scimId: string): number {
-    const brivoId = parseInt(scimId, 10);
-    if (isNaN(brivoId)) {
-      throw new ScimNotFoundException(`Invalid user id: ${scimId}`);
-    }
-    return brivoId;
-  }
-
-  private static extractGroupIds(scim: CreateScimUserDto): number[] {
-    if (!scim.groups) {
-      return [];
-    }
-
-    return scim.groups
-      .map((g) => g.value)
-      .filter((v): v is string => !!v)
-      .map((value) => Number.parseInt(value, 10))
-      .filter((n) => Number.isFinite(n));
-  }
-
-  private static extractNameFields(scim: CreateScimUserDto): BrivoNameFields {
+  private extractNameFields(scim: CreateScimUserDto): BrivoNameFields {
     return {
       firstName: scim.name?.givenName ?? scim.displayName ?? scim.userName,
       lastName: scim.name?.familyName ?? '',
@@ -104,21 +86,21 @@ export class ScimBrivoUserMapper {
     };
   }
 
-  private static extractEmails(scim: CreateScimUserDto): BrivoEmail[] {
+  private extractEmails(scim: CreateScimUserDto): BrivoEmail[] {
     return (scim.emails ?? []).map((email) => ({
       address: email.value,
       type: this.mapScimEmailTypeToBrivo(email.type),
     }));
   }
 
-  private static mapScimEmailTypeToBrivo(type?: string): BrivoEmailType {
+  private mapScimEmailTypeToBrivo(type?: string): BrivoEmailType {
     if (type?.toLowerCase() === 'home') {
       return 'Home';
     }
     return this.DEFAULT_EMAIL_TYPE;
   }
 
-  private static mapBrivoEmailTypeToScim(type: BrivoEmailType): string {
+  private mapBrivoEmailTypeToScim(type: BrivoEmailType): string {
     return type === 'Home' ? 'home' : 'work';
   }
 }
