@@ -15,7 +15,7 @@ interface BrivoEmail {
   type: BrivoEmailType;
 }
 
-export class ScimBrivoMapper {
+export class ScimBrivoUserMapper {
   private static readonly DEFAULT_EMAIL_TYPE: BrivoEmailType = 'Work';
 
   public static mapBrivoUserToScim(brivo: BrivoUserDto): ScimUserDto {
@@ -25,12 +25,6 @@ export class ScimBrivoMapper {
       primary: false,
       display: email.address ?? undefined,
     }));
-
-    const groups =
-      brivo.groupIds?.map((id) => ({
-        value: id.toString(),
-        type: 'direct' as const,
-      })) ?? [];
 
     return {
       schemas: ['urn:ietf:params:scim:schemas:core:2.0:User'],
@@ -45,7 +39,7 @@ export class ScimBrivoMapper {
       },
       emails,
       active: brivo.suspended !== true,
-      groups,
+      groups: [],
       meta: {
         resourceType: 'User',
         created: brivo.created,
@@ -65,7 +59,6 @@ export class ScimBrivoMapper {
       phoneNumbers: [],
       externalId: scim.externalId,
       suspended: !scim.active,
-      groupIds: this.extractGroupIds(scim),
       customFields: [],
     };
   }
@@ -80,7 +73,6 @@ export class ScimBrivoMapper {
       emails: this.extractEmails(scim),
       externalId: scim.externalId,
       suspended: !scim.active,
-      groupIds: this.extractGroupIds(scim),
     };
   }
 

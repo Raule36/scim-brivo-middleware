@@ -59,13 +59,6 @@ export class BrivoUserEntity {
   suspended?: boolean;
 
   @Column({
-    type: 'int',
-    array: true,
-    nullable: true,
-  })
-  groupIds?: number[];
-
-  @Column({
     type: 'jsonb',
     nullable: true,
   })
@@ -88,8 +81,6 @@ export class BrivoUserEntity {
       externalId: this.externalId ?? undefined,
       suspended: this.suspended ?? undefined,
 
-      groupIds: this.groupIds ?? undefined,
-
       customFields: this.customFields ?? undefined,
     };
   }
@@ -104,7 +95,6 @@ export class BrivoUserEntity {
     if (dto.phoneNumbers !== undefined) partial.phoneNumbers = dto.phoneNumbers;
     if (dto.externalId !== undefined) partial.externalId = dto.externalId;
     if (dto.suspended !== undefined) partial.suspended = dto.suspended;
-    if (dto.groupIds !== undefined) partial.groupIds = dto.groupIds ?? null;
     if (dto.customFields !== undefined) partial.customFields = dto.customFields ?? null;
 
     return partial;

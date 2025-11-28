@@ -4,11 +4,11 @@ import { Module, Type } from '@nestjs/common';
 import { ScimBrivoFilterMapper } from '@scim/mappers';
 
 import * as controllers from './controllers';
-import { ScimUserService } from './services/scim-user.service';
+import { ScimGroupService, ScimUserService } from './services';
 
 @Module({
   imports: [BrivoModule],
   controllers: Array.from(Object.values(controllers)) as unknown as Type[],
-  providers: [ScimBasicAuthGuard, ScimUserService, ScimBrivoFilterMapper],
+  providers: [ScimBasicAuthGuard, ScimUserService, ScimBrivoFilterMapper, ScimGroupService],
 })
 export class ScimModule {}

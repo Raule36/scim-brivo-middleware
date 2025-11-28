@@ -31,8 +31,6 @@ export const BrivoUserSchema = z.object({
 
   suspended: z.boolean().optional(),
 
-  groupIds: z.array(z.number().int()).optional(),
-
   customFields: z.array(z.union([z.string(), z.number(), z.boolean()])).optional(),
 });
 

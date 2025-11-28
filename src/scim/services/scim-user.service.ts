@@ -1,7 +1,7 @@
 import { BrivoClient, BrivoFilter } from '@brivo/interfaces';
 import { BrivoListDto, BrivoUserDto } from '@brivo/interfaces/dto';
 import { Injectable } from '@nestjs/common';
-import { ScimBrivoMapper } from '@scim/mappers';
+import { ScimBrivoUserMapper } from '@scim/mappers';
 import { ScimBrivoFilterMapper } from '@scim/mappers/scim-brivo-filter.mapper';
 
 import { ScimNotFoundException } from '../exceptions/scim-exception';
@@ -22,7 +22,7 @@ export class ScimUserService {
       brivoFilter,
     );
     const scimUsers: ScimUserDto[] = brivoUserList.data.map((user) =>
-      ScimBrivoMapper.mapBrivoUserToScim(user),
+      ScimBrivoUserMapper.mapBrivoUserToScim(user),
     );
 
     return {
@@ -35,40 +35,40 @@ export class ScimUserService {
   }
 
   public async getById(id: string): Promise<ScimUserDto> {
-    const brivoId = ScimBrivoMapper.parseBrivoId(id);
+    const brivoId = ScimBrivoUserMapper.parseBrivoId(id);
 
     const brivoUser: BrivoUserDto | null = await this.brivoClient.getUser(brivoId);
     if (!brivoUser) {
       throw new ScimNotFoundException(`User with ${id} not found`);
     }
 
-    return ScimBrivoMapper.mapBrivoUserToScim(brivoUser);
+    return ScimBrivoUserMapper.mapBrivoUserToScim(brivoUser);
   }
 
   public async create(dto: CreateScimUserDto): Promise<ScimUserDto> {
     const brivoUserDto: BrivoUserDto = await this.brivoClient.createUser(
-      ScimBrivoMapper.mapCreateScimUserToBrivo(dto),
+      ScimBrivoUserMapper.mapCreateScimUserToBrivo(dto),
     );
-    return ScimBrivoMapper.mapBrivoUserToScim(brivoUserDto);
+    return ScimBrivoUserMapper.mapBrivoUserToScim(brivoUserDto);
   }
 
   public async update(id: string, dto: UpdateScimUserDto): Promise<ScimUserDto> {
     await this.findBrivoUserOrThrow(id);
 
-    const brivoId: number = ScimBrivoMapper.parseBrivoId(id);
-    const updateData: Partial<BrivoUserDto> = ScimBrivoMapper.mapUpdateScimUserToBrivo(dto);
+    const brivoId: number = ScimBrivoUserMapper.parseBrivoId(id);
+    const updateData: Partial<BrivoUserDto> = ScimBrivoUserMapper.mapUpdateScimUserToBrivo(dto);
     const updatedUser: BrivoUserDto = await this.brivoClient.updateUser(brivoId, updateData);
 
-    return ScimBrivoMapper.mapBrivoUserToScim(updatedUser);
+    return ScimBrivoUserMapper.mapBrivoUserToScim(updatedUser);
   }
 
   public async delete(id: string): Promise<void> {
     await this.findBrivoUserOrThrow(id);
-    await this.brivoClient.deleteUser(ScimBrivoMapper.parseBrivoId(id));
+    await this.brivoClient.deleteUser(ScimBrivoUserMapper.parseBrivoId(id));
   }
 
   private async findBrivoUserOrThrow(id: string): Promise<BrivoUserDto> {
-    const brivoId = ScimBrivoMapper.parseBrivoId(id);
+    const brivoId = ScimBrivoUserMapper.parseBrivoId(id);
 
     const brivoUser = await this.brivoClient.getUser(brivoId);
     if (!brivoUser) {
