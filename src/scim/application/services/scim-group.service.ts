@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-
 import {
   CreateScimGroupDto,
   ScimGroupDto,
   ScimGroupListDto,
   UpdateScimGroupDto,
-} from '../../contracts/dto';
+} from '@scim/contracts';
+
 import { GroupProvisioningPort } from '../ports';
 
 @Injectable()

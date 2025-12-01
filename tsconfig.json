@@ -24,8 +24,11 @@
     "noUncheckedIndexedAccess": true,
 
     "paths": {
-      "@config/*": ["infrastructure/config/*"],
-      "@scim/*": ["scim/*"],
+      "@scim/application": ["scim/application"],
+      "@scim/contracts": ["scim/contracts"],
+      "@scim/infrastructure": ["scim/infrastructure"],
+      "@scim/presentation": ["scim/presentation"],
+
       "@brivo/*": ["brivo/*"],
       "@common/*": ["common/*"]
     }

@@ -3,7 +3,7 @@ import {
   ScimUserDto,
   ScimUserListDto,
   UpdateScimUserDto,
-} from '../../contracts/dto';
+} from '@scim/contracts';
 
 export abstract class UserProvisioningPort {
   abstract findAll(startIndex: number, count: number, filter?: string): Promise<ScimUserListDto>;

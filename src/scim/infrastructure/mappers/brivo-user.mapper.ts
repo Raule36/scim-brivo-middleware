@@ -1,7 +1,6 @@
 import { BrivoUserDto, CreateBrivoUserDto } from '@brivo/interfaces/dto';
 import { Injectable } from '@nestjs/common';
-
-import { CreateScimUserDto, ScimUserDto, UpdateScimUserDto } from '../../contracts/dto';
+import { CreateScimUserDto, ScimUserDto, UpdateScimUserDto } from '@scim/contracts';
 
 type BrivoEmailType = 'Work' | 'Home';
 

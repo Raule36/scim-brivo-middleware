@@ -1,7 +1,6 @@
 import { BrivoGroupWithMembersDto, CreateBrivoGroupDto } from '@brivo/interfaces/dto';
 import { Injectable } from '@nestjs/common';
-
-import { CreateScimGroupDto, ScimGroupDto, ScimGroupMemberDto } from '../../contracts/dto';
+import { CreateScimGroupDto, ScimGroupDto, ScimGroupMemberDto } from '@scim/contracts';
 
 @Injectable()
 export class BrivoGroupMapper {

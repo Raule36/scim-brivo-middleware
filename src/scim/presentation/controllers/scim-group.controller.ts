@@ -14,16 +14,16 @@ import {
   Query,
   UsePipes,
 } from '@nestjs/common';
+import { ScimGroupService } from '@scim/application';
 import {
   CreateScimGroupDto,
   ScimGroupDto,
   ScimGroupListDto,
   UpdateScimGroupDto,
-} from '@scim/contracts/dto';
-import { s_CreateGroup, s_Group } from '@scim/contracts/schemas';
-import { ZodValidationPipe } from '@scim/presentation/pipes';
+} from '@scim/contracts';
+import { s_CreateGroup, s_Group } from '@scim/contracts';
 
-import { ScimGroupService } from '../../application/services';
+import { ZodValidationPipe } from '../pipes';
 
 @Controller('scim/v2/Groups')
 export class ScimGroupController {

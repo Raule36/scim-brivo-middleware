@@ -1,6 +1,5 @@
+import { s_ScimException } from '@scim/contracts';
 import { z } from 'zod';
-
-import { s_ScimException } from '../../contracts/schemas';
 
 export type ScimException = z.infer<typeof s_ScimException>;
 

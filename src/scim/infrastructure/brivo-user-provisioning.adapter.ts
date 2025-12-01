@@ -1,15 +1,15 @@
 import { BrivoClient } from '@brivo/interfaces';
 import { BrivoListDto, BrivoUserDto } from '@brivo/interfaces/dto';
 import { Injectable } from '@nestjs/common';
-import { ScimBadRequestException, ScimNotFoundException } from '@scim/application/exceptions';
-
-import { UserProvisioningPort } from '../application/ports';
+import { ScimBadRequestException, ScimNotFoundException } from '@scim/application';
+import { UserProvisioningPort } from '@scim/application';
 import {
   CreateScimUserDto,
   ScimUserDto,
   ScimUserListDto,
   UpdateScimUserDto,
-} from '../contracts/dto';
+} from '@scim/contracts';
+
 import { BrivoFilterMapper, BrivoUserMapper } from './mappers';
 
 @Injectable()

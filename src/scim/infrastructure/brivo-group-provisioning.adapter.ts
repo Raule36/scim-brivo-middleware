@@ -1,15 +1,15 @@
 import { BrivoClient } from '@brivo/interfaces';
 import { BrivoGroupWithMembersDto, BrivoListDto } from '@brivo/interfaces/dto';
 import { Injectable } from '@nestjs/common';
-import { ScimBadRequestException, ScimNotFoundException } from '@scim/application/exceptions';
-
-import { GroupProvisioningPort } from '../application/ports';
+import { ScimBadRequestException, ScimNotFoundException } from '@scim/application';
+import { GroupProvisioningPort } from '@scim/application';
 import {
   CreateScimGroupDto,
   ScimGroupDto,
   ScimGroupListDto,
   UpdateScimGroupDto,
-} from '../contracts/dto';
+} from '@scim/contracts';
+
 import { BrivoFilterMapper, BrivoGroupMapper } from './mappers';
 
 @Injectable()

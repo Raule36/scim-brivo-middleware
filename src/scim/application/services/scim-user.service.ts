@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-
 import {
   CreateScimUserDto,
   ScimUserDto,
   ScimUserListDto,
   UpdateScimUserDto,
-} from '../../contracts/dto';
+} from '@scim/contracts';
+
 import { UserProvisioningPort } from '../ports';
 
 @Injectable()

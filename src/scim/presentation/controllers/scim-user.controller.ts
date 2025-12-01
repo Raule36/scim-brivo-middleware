@@ -18,16 +18,16 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import { ScimUserService } from '@scim/application/services/scim-user.service';
-import { ScimExceptionFilter } from '@scim/presentation/filters/scim-exception.filter';
-
+import { ScimUserService } from '@scim/application';
 import {
   CreateScimUserDto,
   ScimUserDto,
   ScimUserListDto,
   UpdateScimUserDto,
-} from '../../contracts/dto';
-import { s_CreateUser } from '../../contracts/schemas';
+} from '@scim/contracts';
+import { s_CreateUser } from '@scim/contracts';
+
+import { ScimExceptionFilter } from '../filters/scim-exception.filter';
 import { ZodValidationPipe } from '../pipes';
 
 @UseFilters(ScimExceptionFilter)

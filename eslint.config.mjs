@@ -40,7 +40,23 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn'
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['../../contracts/*', '../../application/*', '../../presentation/*', '../../infrastructure/*'],
+              message: 'Use absolute imports (@scim/...) for cross-layer imports',
+            },
+            {
+              group: ['../../../*'],
+              message: 'Use absolute imports for cross-module imports',
+            },
+          ],
+        },
+      ],
     },
   },
 );

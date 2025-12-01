@@ -3,7 +3,7 @@ import {
   ScimGroupDto,
   ScimGroupListDto,
   UpdateScimGroupDto,
-} from '../../contracts/dto';
+} from '@scim/contracts';
 
 export abstract class GroupProvisioningPort {
   abstract findAll(startIndex: number, count: number, filter?: string): Promise<ScimGroupListDto>;
