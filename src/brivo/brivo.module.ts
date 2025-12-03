@@ -1,8 +1,11 @@
 import { BrivoApiClient } from '@brivo/application';
-import { PersistenceModule } from '@brivo/persistence';
+import {
+  BrivoApiClientFactory,
+  BrivoMockClient,
+  BrivoOAuthService,
+  PersistenceModule,
+} from '@brivo/infrastructure';
 import { Module } from '@nestjs/common';
-
-import { BrivoApiClientFactory, BrivoMockClient } from './infrastructure';
 
 @Module({
   imports: [PersistenceModule],
@@ -10,6 +13,7 @@ import { BrivoApiClientFactory, BrivoMockClient } from './infrastructure';
   providers: [
     BrivoMockClient,
     BrivoApiClientFactory,
+    BrivoOAuthService,
     {
       provide: BrivoApiClient,
       useFactory: (factory: BrivoApiClientFactory) => factory.create(),

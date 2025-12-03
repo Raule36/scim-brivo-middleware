@@ -13,14 +13,16 @@ import { Inject } from '@nestjs/common';
 
 import { BrivoConfig, brivoConfig } from '../config';
 import { BrivoBaseHttpClient } from './brivo-base-http.client';
+import { BrivoOAuthService } from './brivo-oauth.service';
 
 export class BrivoHttpClient extends BrivoBaseHttpClient implements BrivoApiClient {
   constructor(
     httpService: HttpService,
     @Inject(brivoConfig.KEY)
     config: BrivoConfig,
+    oauthService: BrivoOAuthService,
   ) {
-    super(httpService, config);
+    super(httpService, config, oauthService);
   }
 
   public async getUsers(
