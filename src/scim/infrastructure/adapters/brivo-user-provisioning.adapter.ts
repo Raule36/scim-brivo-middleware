@@ -10,7 +10,7 @@ import {
   UpdateScimUserDto,
 } from '@scim/contracts';
 
-import { BrivoFilterMapper, BrivoUserMapper } from './mappers';
+import { BrivoFilterMapper, BrivoUserMapper } from '../mappers';
 
 @Injectable()
 export class BrivoUserAdapter implements UserProvisioningPort {

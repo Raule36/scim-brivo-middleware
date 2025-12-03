@@ -9,7 +9,7 @@ import {
   UpdateScimGroupDto,
 } from '@scim/contracts';
 
-import { BrivoFilterMapper, BrivoGroupMapper } from './mappers';
+import { BrivoFilterMapper, BrivoGroupMapper } from '../mappers';
 
 @Injectable()
 export class BrivoGroupAdapter implements GroupProvisioningPort {
