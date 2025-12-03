@@ -1,1 +1,1 @@
-export * from './scim-exception';
+export * from './scim.exception';
