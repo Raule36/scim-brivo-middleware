@@ -1,14 +1,13 @@
-import { BrivoFilter } from '@brivo/interfaces';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-
+import { BrivoFilter, BrivoGroupRepository } from '@brivo/application';
 import {
   BrivoGroupWithMembersDto,
   CreateBrivoGroupDto,
   UpdateBrivoGroupDto,
-} from '../../interfaces/dto';
-import { BrivoGroupRepository } from '../../interfaces/repositories';
+} from '@brivo/contracts';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { BrivoGroupEntity } from '../entitites';
 import { FilterUtils } from '../filter.utils';
 

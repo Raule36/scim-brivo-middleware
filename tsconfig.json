@@ -28,8 +28,15 @@
       "@scim/contracts": ["scim/contracts"],
       "@scim/infrastructure": ["scim/infrastructure"],
       "@scim/presentation": ["scim/presentation"],
+      "@scim": ["scim/index"],
 
-      "@brivo/*": ["brivo/*"],
+      "@brivo/application": ["brivo/application"],
+      "@brivo/contracts": ["brivo/contracts"],
+      "@brivo/infrastructure": ["brivo/infrastructure"],
+      "@brivo/persistence": ["brivo/persistence"],
+      "@brivo": ["brivo/index"],
+
+
       "@common/*": ["common/*"]
     }
   }

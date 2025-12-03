@@ -1,3 +1,4 @@
+import { BrivoUserDto } from '@brivo/contracts';
 import {
   Column,
   CreateDateColumn,
@@ -6,16 +7,14 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { BrivoUserDto } from '../../interfaces/dto';
-
 type BrivoEmail = {
   address?: string;
-  type: 'Work' | 'Home';
+  type: string;
 };
 
 type BrivoPhoneNumber = {
   number: string;
-  type: 'Work' | 'Home';
+  type: string;
 };
 
 @Entity('brivo_users')

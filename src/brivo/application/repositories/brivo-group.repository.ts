@@ -1,5 +1,6 @@
+import { BrivoGroupWithMembersDto, CreateBrivoGroupDto } from '@brivo/contracts';
+
 import { BrivoFilter } from '../brivo-filter';
-import { BrivoGroupWithMembersDto, CreateBrivoGroupDto } from '../dto';
 
 export abstract class BrivoGroupRepository {
   abstract findAll(

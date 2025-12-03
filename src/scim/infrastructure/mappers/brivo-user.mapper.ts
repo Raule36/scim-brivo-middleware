@@ -1,8 +1,6 @@
-import { BrivoUserDto, CreateBrivoUserDto } from '@brivo/interfaces/dto';
+import { BrivoUserDto, CreateBrivoUserDto } from '@brivo/contracts';
 import { Injectable } from '@nestjs/common';
 import { CreateScimUserDto, ScimUserDto, UpdateScimUserDto } from '@scim/contracts';
-
-type BrivoEmailType = 'Work' | 'Home';
 
 interface BrivoNameFields {
   firstName: string;
@@ -12,12 +10,12 @@ interface BrivoNameFields {
 
 interface BrivoEmail {
   address: string;
-  type: BrivoEmailType;
+  type: string;
 }
 
 @Injectable()
 export class BrivoUserMapper {
-  private readonly DEFAULT_EMAIL_TYPE: BrivoEmailType = 'Work';
+  private readonly DEFAULT_EMAIL_TYPE: string = 'work';
 
   public toScim(brivo: BrivoUserDto): ScimUserDto {
     const emails = brivo.emails.map((email) => ({
@@ -92,14 +90,14 @@ export class BrivoUserMapper {
     }));
   }
 
-  private mapScimEmailTypeToBrivo(type?: string): BrivoEmailType {
+  private mapScimEmailTypeToBrivo(type?: string): string {
     if (type?.toLowerCase() === 'home') {
       return 'Home';
     }
     return this.DEFAULT_EMAIL_TYPE;
   }
 
-  private mapBrivoEmailTypeToScim(type: BrivoEmailType): string {
+  private mapBrivoEmailTypeToScim(type: string): string {
     return type === 'Home' ? 'home' : 'work';
   }
 }

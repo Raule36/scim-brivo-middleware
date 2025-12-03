@@ -1,7 +1,7 @@
+import { BrivoGroupRepository, BrivoUserRepository } from '@brivo/application';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { BrivoGroupRepository, BrivoUserRepository } from '../interfaces/repositories';
 import { BrivoGroupEntity, BrivoUserEntity } from './entitites';
 import { OrmBrivoGroupRepository, OrmBrivoUserRepository } from './repositories';
 

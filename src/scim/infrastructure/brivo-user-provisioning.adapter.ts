@@ -1,5 +1,5 @@
-import { BrivoClient } from '@brivo/interfaces';
-import { BrivoListDto, BrivoUserDto } from '@brivo/interfaces/dto';
+import { BrivoApiClient } from '@brivo/application';
+import { BrivoListDto, BrivoUserDto } from '@brivo/contracts';
 import { Injectable } from '@nestjs/common';
 import { ScimBadRequestException, ScimNotFoundException } from '@scim/application';
 import { UserProvisioningPort } from '@scim/application';
@@ -15,7 +15,7 @@ import { BrivoFilterMapper, BrivoUserMapper } from './mappers';
 @Injectable()
 export class BrivoUserAdapter implements UserProvisioningPort {
   constructor(
-    private readonly brivoClient: BrivoClient,
+    private readonly brivoClient: BrivoApiClient,
     private readonly filterMapper: BrivoFilterMapper,
     private readonly userMapper: BrivoUserMapper,
   ) {}
@@ -43,6 +43,12 @@ export class BrivoUserAdapter implements UserProvisioningPort {
     };
   }
 
+  public async findById(id: string): Promise<ScimUserDto> {
+    const brivoId = this.parseId(id);
+    const brivoUser = await this.brivoClient.getUser(brivoId);
+    return this.userMapper.toScim(brivoUser);
+  }
+
   public async create(dto: CreateScimUserDto): Promise<ScimUserDto> {
     const brivoCreateDto = this.userMapper.toCreateBrivo(dto);
     const brivoUser = await this.brivoClient.createUser(brivoCreateDto);
@@ -51,11 +57,6 @@ export class BrivoUserAdapter implements UserProvisioningPort {
 
   public async update(id: string, dto: UpdateScimUserDto): Promise<ScimUserDto> {
     const brivoId = this.parseId(id);
-
-    const existingUser = await this.brivoClient.getUser(brivoId);
-    if (!existingUser) {
-      throw new ScimNotFoundException(`User with id ${id} not found`);
-    }
 
     const brivoUpdateDto = this.userMapper.toUpdateBrivo(dto);
     const updatedUser = await this.brivoClient.updateUser(brivoId, brivoUpdateDto);
@@ -80,16 +81,5 @@ export class BrivoUserAdapter implements UserProvisioningPort {
       throw new ScimBadRequestException(`Invalid User id: ${scimId}`);
     }
     return brivoId;
-  }
-
-  public async findById(id: string): Promise<ScimUserDto> {
-    const brivoId = this.parseId(id);
-    const brivoUser = await this.brivoClient.getUser(brivoId);
-
-    if (!brivoUser) {
-      throw new ScimNotFoundException(`User with id ${id} not found`);
-    }
-
-    return this.userMapper.toScim(brivoUser);
   }
 }

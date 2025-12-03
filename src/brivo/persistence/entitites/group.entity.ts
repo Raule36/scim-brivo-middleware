@@ -1,4 +1,4 @@
-import { BrivoGroupWithMembersDto } from '@brivo/interfaces/dto';
+import { BrivoGroupWithMembersDto } from '@brivo/contracts';
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BrivoUserEntity } from './user.entity';

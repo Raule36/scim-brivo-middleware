@@ -1,4 +1,4 @@
-import { BRIVO_FILTER_OPERATORS, BrivoFilter, BrivoFilterOperator } from '@brivo/interfaces';
+import { BRIVO_FILTER_OPERATORS, BrivoFilter, BrivoFilterOperator } from '@brivo/application';
 import { Injectable, Logger } from '@nestjs/common';
 import { Compare, Filter, parse } from 'scim2-parse-filter';
 

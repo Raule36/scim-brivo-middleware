@@ -1,10 +1,9 @@
-import { BrivoFilter } from '@brivo/interfaces';
+import { BrivoFilter, BrivoUserRepository } from '@brivo/application';
+import { BrivoUserDto, CreateBrivoUserDto } from '@brivo/contracts';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { BrivoUserDto, CreateBrivoUserDto } from '../../interfaces/dto';
-import { BrivoUserRepository } from '../../interfaces/repositories';
 import { BrivoUserEntity } from '../entitites';
 import { FilterUtils } from '../filter.utils';
 

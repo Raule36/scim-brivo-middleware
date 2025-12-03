@@ -1,6 +1,10 @@
-import { Injectable } from '@nestjs/common';
-
-import { BrivoClient, BrivoFilter } from '../interfaces';
+import {
+  BrivoApiClient,
+  BrivoApiException,
+  BrivoFilter,
+  BrivoGroupRepository,
+  BrivoUserRepository,
+} from '@brivo/application';
 import {
   BrivoGroupWithMembersDto,
   BrivoListDto,
@@ -8,11 +12,11 @@ import {
   CreateBrivoGroupDto,
   CreateBrivoUserDto,
   UpdateBrivoGroupDto,
-} from '../interfaces/dto';
-import { BrivoGroupRepository, BrivoUserRepository } from '../interfaces/repositories';
+} from '@brivo/contracts';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class BrivoMockAdapter implements BrivoClient {
+export class BrivoMockClient implements BrivoApiClient {
   constructor(
     private readonly userRepository: BrivoUserRepository,
     private readonly groupRepository: BrivoGroupRepository,
@@ -30,8 +34,12 @@ export class BrivoMockAdapter implements BrivoClient {
     return this.userRepository.delete(id);
   }
 
-  public getUser(id: number): Promise<BrivoUserDto | null> {
-    return this.userRepository.findById(id);
+  public async getUser(id: number): Promise<BrivoUserDto> {
+    const dto = await this.userRepository.findById(id);
+    if (!dto) {
+      throw new BrivoApiException(404, `User with id ${id} not found`);
+    }
+    return dto;
   }
 
   public async getUsers(
@@ -60,8 +68,12 @@ export class BrivoMockAdapter implements BrivoClient {
     return this.groupRepository.delete(id);
   }
 
-  public getGroup(id: number): Promise<BrivoGroupWithMembersDto | null> {
-    return this.groupRepository.findById(id);
+  public async getGroup(id: number): Promise<BrivoGroupWithMembersDto> {
+    const dto = await this.groupRepository.findById(id);
+    if (!dto) {
+      throw new BrivoApiException(404, `Group with id ${id} not found`);
+    }
+    return dto;
   }
 
   public async getGroups(

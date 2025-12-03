@@ -1,4 +1,3 @@
-import { ScimBasicAuthGuard } from '@common/guards';
 import {
   Body,
   Controller,
@@ -8,7 +7,6 @@ import {
   Header,
   HttpCode,
   HttpStatus,
-  Logger,
   Param,
   ParseIntPipe,
   Post,
@@ -27,15 +25,14 @@ import {
 } from '@scim/contracts';
 import { s_CreateUser } from '@scim/contracts';
 
-import { ScimExceptionFilter } from '../filters/scim-exception.filter';
+import { ScimExceptionFilter } from '../filters';
+import { ScimBasicAuthGuard } from '../guards';
 import { ZodValidationPipe } from '../pipes';
 
 @UseFilters(ScimExceptionFilter)
 @UseGuards(ScimBasicAuthGuard)
 @Controller('scim/v2/Users')
 export class ScimUserController {
-  private readonly logger = new Logger(ScimUserController.name);
-
   constructor(private readonly userService: ScimUserService) {}
 
   @Get()

@@ -1,6 +1,5 @@
+import { BrivoFilter, BrivoFilterItem, BrivoFilterOperator } from '@brivo/application';
 import { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
-
-import { BrivoFilter, BrivoFilterItem, BrivoFilterOperator } from '../interfaces/brivo-filter';
 
 export class FilterUtils {
   public static apply<T extends ObjectLiteral>(

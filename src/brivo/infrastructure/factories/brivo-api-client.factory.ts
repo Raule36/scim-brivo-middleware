@@ -1,17 +1,17 @@
+import { BrivoApiClient } from '@brivo/application';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { BrivoClient } from '../interfaces';
-import { BrivoMockAdapter } from './brivo-mock.adapter';
+import { BrivoMockClient } from '../http/brivo-mock.client';
 
 @Injectable()
-export class BrivoClientFactory {
+export class BrivoApiClientFactory {
   constructor(
     private readonly config: ConfigService,
-    private readonly mock: BrivoMockAdapter,
+    private readonly mock: BrivoMockClient,
   ) {}
 
-  public create(): BrivoClient {
+  public create(): BrivoApiClient {
     const mode = this.config.get<'MOCK' | 'HTTP'>('BRIVO_MODE');
     if (mode === 'HTTP') {
       throw new Error('HTTP adapter is not implemented');

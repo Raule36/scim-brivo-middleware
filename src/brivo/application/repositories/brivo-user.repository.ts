@@ -1,5 +1,6 @@
+import { BrivoUserDto, CreateBrivoUserDto } from '@brivo/contracts';
+
 import { BrivoFilter } from '../brivo-filter';
-import { BrivoUserDto, CreateBrivoUserDto } from '../dto';
 
 export abstract class BrivoUserRepository {
   abstract findAll(

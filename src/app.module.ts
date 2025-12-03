@@ -1,6 +1,6 @@
-import { BrivoModule } from '@brivo/brivo.module';
+import { BrivoModule } from '@brivo';
 import { Module } from '@nestjs/common';
-import { ScimModule } from '@scim/scim.module';
+import { ScimModule } from '@scim';
 
 import { CoreModule } from './core';
 

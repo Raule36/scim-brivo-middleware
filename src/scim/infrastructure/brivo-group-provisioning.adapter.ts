@@ -1,8 +1,7 @@
-import { BrivoClient } from '@brivo/interfaces';
-import { BrivoGroupWithMembersDto, BrivoListDto } from '@brivo/interfaces/dto';
+import { BrivoApiClient } from '@brivo/application';
+import { BrivoGroupWithMembersDto, BrivoListDto } from '@brivo/contracts';
 import { Injectable } from '@nestjs/common';
-import { ScimBadRequestException, ScimNotFoundException } from '@scim/application';
-import { GroupProvisioningPort } from '@scim/application';
+import { GroupProvisioningPort, ScimBadRequestException } from '@scim/application';
 import {
   CreateScimGroupDto,
   ScimGroupDto,
@@ -15,12 +14,16 @@ import { BrivoFilterMapper, BrivoGroupMapper } from './mappers';
 @Injectable()
 export class BrivoGroupAdapter implements GroupProvisioningPort {
   constructor(
-    private readonly brivoClient: BrivoClient,
+    private readonly brivoClient: BrivoApiClient,
     private readonly filterMapper: BrivoFilterMapper,
     private readonly groupMapper: BrivoGroupMapper,
   ) {}
 
-  async findAll(startIndex: number, count: number, filter?: string): Promise<ScimGroupListDto> {
+  public async findAll(
+    startIndex: number,
+    count: number,
+    filter?: string,
+  ): Promise<ScimGroupListDto> {
     const brivoFilter = this.filterMapper.fromScim(filter);
     const brivoGroupList: BrivoListDto<BrivoGroupWithMembersDto> = await this.brivoClient.getGroups(
       startIndex,
@@ -39,29 +42,30 @@ export class BrivoGroupAdapter implements GroupProvisioningPort {
     };
   }
 
-  async findById(id: string): Promise<ScimGroupDto> {
-    const brivoGroup = await this.findBrivoGroupOrThrow(id);
+  public async findById(id: string): Promise<ScimGroupDto> {
+    const brivoId = this.parseId(id);
+    const brivoGroup = await this.brivoClient.getGroup(brivoId);
     return this.groupMapper.toScim(brivoGroup);
   }
 
-  async create(dto: CreateScimGroupDto): Promise<ScimGroupDto> {
+  public async create(dto: CreateScimGroupDto): Promise<ScimGroupDto> {
     const brivoCreateDto = this.groupMapper.toCreateBrivo(dto);
     const createdGroup = await this.brivoClient.createGroup(brivoCreateDto);
     return this.groupMapper.toScim(createdGroup);
   }
 
-  async update(id: string, dto: UpdateScimGroupDto): Promise<ScimGroupDto> {
+  public async update(id: string, dto: UpdateScimGroupDto): Promise<ScimGroupDto> {
     const brivoId = this.parseId(id);
-    const existingGroup = await this.findBrivoGroupOrThrow(id);
+    const existingGroup = await this.brivoClient.getGroup(brivoId);
 
     await this.updateGroupInfo(brivoId, dto);
     await this.syncGroupMembers(brivoId, existingGroup, dto);
 
-    const updatedGroup = await this.findBrivoGroupOrThrow(id);
+    const updatedGroup = await this.brivoClient.getGroup(brivoId);
     return this.groupMapper.toScim(updatedGroup);
   }
 
-  async delete(id: string): Promise<void> {
+  public async delete(id: string): Promise<void> {
     const brivoId = this.parseId(id);
     await this.brivoClient.deleteGroup(brivoId);
   }
@@ -95,17 +99,6 @@ export class BrivoGroupAdapter implements GroupProvisioningPort {
       ...toAdd.map((userId) => this.brivoClient.addUserToGroup(brivoId, userId)),
       ...toRemove.map((userId) => this.brivoClient.removeUserFromGroup(brivoId, userId)),
     ]);
-  }
-
-  private async findBrivoGroupOrThrow(id: string): Promise<BrivoGroupWithMembersDto> {
-    const brivoId = this.parseId(id);
-    const brivoGroup = await this.brivoClient.getGroup(brivoId);
-
-    if (!brivoGroup) {
-      throw new ScimNotFoundException(`User with id ${id} not found`);
-    }
-
-    return brivoGroup;
   }
 
   private parseId(scimId: string): number {
