@@ -27,6 +27,7 @@
       "@scim/application": ["scim/application"],
       "@scim/contracts": ["scim/contracts"],
       "@scim/infrastructure": ["scim/infrastructure"],
+      "@scim/presentation": ["scim/presentation"],
       "@scim": ["scim/index"],
 
       "@brivo/application": ["brivo/application"],
