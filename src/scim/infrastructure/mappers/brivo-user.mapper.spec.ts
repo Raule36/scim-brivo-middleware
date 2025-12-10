@@ -1,5 +1,10 @@
 import { BrivoUserDto, CreateBrivoUserDto, UpdateBrivoUserDto } from '@brivo/contracts';
-import { CreateScimUserDto, ScimUserDto, UpdateScimUserDto } from '@scim/contracts';
+import {
+  CreateScimUserDto,
+  ScimUserDto,
+  ScimUserEmailDto,
+  UpdateScimUserDto,
+} from '@scim/contracts';
 
 import { BrivoUserMapper } from './brivo-user.mapper';
 
@@ -12,6 +17,7 @@ describe('BrivoUserMapper', () => {
 
   it('should map scim create user to brivo format', () => {
     const scim: CreateScimUserDto = {
+      schemas: ['urn:ietf:params:scim:schemas:core:2.0:User'],
       userName: 'john.doe',
       active: true,
       name: {
@@ -22,7 +28,8 @@ describe('BrivoUserMapper', () => {
       emails: [
         { value: 'work@example.com', type: 'work' },
         { value: 'home@example.com', type: 'home' },
-      ],
+      ] as ScimUserEmailDto[],
+      groups: [],
     };
 
     const createBrivoUserDto: CreateBrivoUserDto = {
@@ -46,6 +53,7 @@ describe('BrivoUserMapper', () => {
 
   it('should map scim update user to brivo format', () => {
     const scim: UpdateScimUserDto = {
+      schemas: ['urn:ietf:params:scim:schemas:core:2.0:User'],
       userName: 'john.doe',
       active: true,
       name: {
@@ -56,7 +64,8 @@ describe('BrivoUserMapper', () => {
       emails: [
         { value: 'work@example.com', type: 'work' },
         { value: 'home@example.com', type: 'home' },
-      ],
+      ] as ScimUserEmailDto[],
+      groups: [],
     };
 
     const createBrivoUserDto: UpdateBrivoUserDto = {
@@ -109,7 +118,7 @@ describe('BrivoUserMapper', () => {
       emails: [
         { value: 'work@example.com', type: 'work' },
         { value: 'home@example.com', type: 'home' },
-      ],
+      ] as ScimUserEmailDto[],
       active: true,
       groups: [],
       meta: {

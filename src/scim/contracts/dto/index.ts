@@ -4,6 +4,7 @@ export * from './scim-group.dto';
 export * from './scim-group-list.dto';
 export * from './scim-group-member.dto';
 export * from './scim-user.dto';
+export * from './scim-user-email.dto';
 export * from './scim-user-list.dto';
 export * from './update-scim-group.dto';
 export * from './update-scim-user.dto';

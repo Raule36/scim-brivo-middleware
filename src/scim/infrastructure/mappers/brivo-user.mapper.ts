@@ -1,6 +1,11 @@
-import { BrivoUserDto, CreateBrivoUserDto } from '@brivo/contracts';
+import { BrivoUserDto, CreateBrivoUserDto, UpdateBrivoUserDto } from '@brivo/contracts';
 import { Injectable } from '@nestjs/common';
-import { CreateScimUserDto, ScimUserDto, UpdateScimUserDto } from '@scim/contracts';
+import {
+  CreateScimUserDto,
+  ScimUserDto,
+  ScimUserEmailDto,
+  UpdateScimUserDto,
+} from '@scim/contracts';
 
 interface BrivoNameFields {
   firstName: string;
@@ -21,14 +26,11 @@ export class BrivoUserMapper {
     const emails = brivo.emails.map((email) => ({
       value: email.address ?? '',
       type: this.mapBrivoEmailTypeToScim(email.type),
-      primary: false,
-      display: email.address ?? undefined,
-    }));
+    })) as ScimUserEmailDto[];
 
     return {
       schemas: ['urn:ietf:params:scim:schemas:core:2.0:User'],
       id: String(brivo.id),
-      externalId: brivo.externalId,
       userName: brivo.externalId ?? String(brivo.id),
       displayName: `${brivo.firstName} ${brivo.lastName}`.trim(),
       name: {
@@ -56,13 +58,13 @@ export class BrivoUserMapper {
       middleName,
       emails: this.extractEmails(scim),
       phoneNumbers: [],
-      externalId: scim.externalId,
+      externalId: scim.userName,
       suspended: !scim.active,
       customFields: [],
     };
   }
 
-  public toUpdateBrivo(scim: UpdateScimUserDto): Partial<BrivoUserDto> {
+  public toUpdateBrivo(scim: UpdateScimUserDto): UpdateBrivoUserDto {
     const { firstName, lastName, middleName } = this.extractNameFields(scim);
 
     return {
@@ -70,8 +72,10 @@ export class BrivoUserMapper {
       lastName,
       middleName,
       emails: this.extractEmails(scim),
-      externalId: scim.externalId,
+      phoneNumbers: [],
+      externalId: scim.userName,
       suspended: !scim.active,
+      customFields: [],
     };
   }
 
@@ -92,12 +96,12 @@ export class BrivoUserMapper {
 
   private mapScimEmailTypeToBrivo(type?: string): string {
     if (type?.toLowerCase() === 'home') {
-      return 'Home';
+      return 'home';
     }
     return this.DEFAULT_EMAIL_TYPE;
   }
 
   private mapBrivoEmailTypeToScim(type: string): string {
-    return type === 'Home' ? 'home' : 'work';
+    return type.toLowerCase().includes('home') ? 'home' : 'work';
   }
 }
