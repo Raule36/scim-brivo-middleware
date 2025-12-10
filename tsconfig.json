@@ -22,6 +22,7 @@
     "allowJs": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
 
     "paths": {
       "@scim/application": ["scim/application"],
@@ -35,7 +36,6 @@
       "@brivo/infrastructure": ["brivo/infrastructure"],
       "@brivo/persistence": ["brivo/persistence"],
       "@brivo": ["brivo/index"],
-
 
       "@common/*": ["common/*"]
     }
