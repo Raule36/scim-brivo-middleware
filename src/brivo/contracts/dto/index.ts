@@ -5,3 +5,4 @@ export * from './brivo-user.dto';
 export * from './create-brivo-group.dto';
 export * from './create-brivo-user.dto';
 export * from './update-brivo-group.dto';
+export * from './update-brivo-user.dto';
