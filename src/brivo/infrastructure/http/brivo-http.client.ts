@@ -9,12 +9,13 @@ import {
   UpdateBrivoGroupDto,
 } from '@brivo/contracts';
 import { HttpService } from '@nestjs/axios';
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { BrivoConfig, brivoConfig } from '../config';
 import { BrivoBaseHttpClient } from './brivo-base-http.client';
 import { BrivoOAuthService } from './brivo-oauth.service';
 
+@Injectable()
 export class BrivoHttpClient extends BrivoBaseHttpClient implements BrivoApiClient {
   constructor(
     httpService: HttpService,

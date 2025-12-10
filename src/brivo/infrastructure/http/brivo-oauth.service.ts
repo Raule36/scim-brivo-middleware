@@ -1,6 +1,6 @@
 import { BrivoApiException } from '@brivo/application';
 import { HttpService } from '@nestjs/axios';
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { firstValueFrom } from 'rxjs';
 
@@ -14,7 +14,7 @@ interface TokenResponse {
 }
 
 @Injectable()
-export class BrivoOAuthService implements OnModuleInit {
+export class BrivoOAuthService {
   private readonly logger = new Logger(BrivoOAuthService.name);
 
   private accessToken: string | null = null;
@@ -27,10 +27,6 @@ export class BrivoOAuthService implements OnModuleInit {
     @Inject(brivoConfig.KEY)
     private readonly config: BrivoConfig,
   ) {}
-
-  async onModuleInit(): Promise<void> {
-    await this.authenticate();
-  }
 
   async getAccessToken(): Promise<string> {
     await this.ensureValidToken();
