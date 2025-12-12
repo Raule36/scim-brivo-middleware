@@ -23,10 +23,6 @@ export class BrivoGroupMapper {
     };
   }
 
-  public toScimList(brivoGroups: BrivoGroupWithMembersDto[]): ScimGroupDto[] {
-    return brivoGroups.map((group) => this.toScim(group));
-  }
-
   public toCreateBrivo(dto: CreateScimGroupDto): CreateBrivoGroupDto {
     return {
       name: dto.displayName,
