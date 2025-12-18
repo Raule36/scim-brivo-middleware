@@ -6,7 +6,7 @@ export class HealthController {
   constructor(private readonly dataSource: DataSource) {}
 
   @Get()
-  public async health(): Promise<object> {
+  public health(): object {
     return {
       status: this.dataSource.isInitialized ? 'ok' : 'error',
       timestamp: new Date().toISOString(),
