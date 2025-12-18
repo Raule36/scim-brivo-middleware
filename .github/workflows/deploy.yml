@@ -9,6 +9,7 @@ on:
       - main
 
 env:
+  AWS_ACCOUNT_ID: 136337412719
   AWS_REGION: eu-central-1
   ECR_REPOSITORY: brivo-scim-gateway
   ECS_SERVICE: brivo-scim-service
@@ -72,14 +73,14 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::${{ inputs.aws_account_id }}:role/github-actions-rmodi
-          aws-region: ${{ inputs.aws_region }}
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github-actions-deploy
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
         with:
-          registries: ${{ inputs.aws_account_id }}
+          registries: ${{ env.AWS_ACCOUNT_ID }}
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
