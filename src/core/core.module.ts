@@ -25,6 +25,7 @@ export class CoreModule {
             autoLoadEntities: true,
             synchronize: true,
             logging: true,
+            ssl: { rejectUnauthorized: false }
           }),
         }),
       ],
