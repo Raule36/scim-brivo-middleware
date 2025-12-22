@@ -1,0 +1,112 @@
+{
+  "compatibilities": [
+    "EC2",
+    "MANAGED_INSTANCES",
+    "FARGATE"
+  ],
+  "containerDefinitions": [
+    {
+      "cpu": 0,
+      "environment": [
+        {
+          "name": "PORT",
+          "value": "3000"
+        },
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        }
+      ],
+      "essential": true,
+      "image": "nginx:alpine",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/",
+          "awslogs-create-group": "true",
+          "awslogs-region": "eu-central-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "mountPoints": [],
+      "name": "brivo-scim-gateway",
+      "portMappings": [
+        {
+          "appProtocol": "http",
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "name": "api-80-tcp",
+          "protocol": "tcp"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DB_HOST",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/Porstgres-pZRPYB:host::"
+        },
+        {
+          "name": "DB_PORT",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/Porstgres-pZRPYB:port::"
+        },
+        {
+          "name": "DB_USER",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/Porstgres-pZRPYB:username::"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/Porstgres-pZRPYB:password::"
+        },
+        {
+          "name": "DB_NAME",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/Porstgres-pZRPYB:dbInstanceIdentifier::"
+        }
+      ],
+      "systemControls": [],
+      "volumesFrom": []
+    }
+  ],
+  "cpu": "256",
+  "enableFaultInjection": false,
+  "executionRoleArn": "arn:aws:iam::136337412719:role/ecsTaskExecutionRole",
+  "family": "brivo-scim-gateway",
+  "memory": "2048",
+  "networkMode": "awsvpc",
+  "placementConstraints": [],
+  "registeredAt": "2025-12-22T06:44:51.738Z",
+  "registeredBy": "arn:aws:iam::136337412719:root",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "name": "ecs.capability.secrets.asm.environment-variables"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+    }
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "revision": 2,
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "status": "ACTIVE",
+  "taskDefinitionArn": "arn:aws:ecs:eu-central-1:136337412719:task-definition/brivo-scim-gateway:2",
+  "volumes": [],
+  "tags": []
+}

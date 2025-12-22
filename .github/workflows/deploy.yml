@@ -12,8 +12,8 @@ env:
   AWS_ACCOUNT_ID: 136337412719
   AWS_REGION: eu-central-1
   ECR_REPOSITORY: brivo-scim-gateway
-  ECS_SERVICE: brivo-scim-service
-  ECS_CLUSTER: brivo-scim-cluster
+  ECS_SERVICE: brivo-scim-gateway-service-1eslujdm
+  ECS_CLUSTER: awesome-eagle-p6lnid
   ECS_TASK_DEFINITION: task-definition.json
 
 jobs:
