@@ -3,8 +3,8 @@
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
-  "memory": "2048",
-  "executionRoleArn": "arn:aws:iam::136337412719:role/ecsTaskExecutionRole",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::136337412719:role/brivo-scim-gateway-ecs-execution-role",
   "containerDefinitions": [
     {
       "name": "brivo-scim-gateway",
@@ -24,33 +24,33 @@
       "secrets": [
         {
           "name": "DB_HOST",
-          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/Porstgres-pZRPYB:host::"
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/postgres-DIbPkZ:host::"
         },
         {
           "name": "DB_PORT",
-          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/Porstgres-pZRPYB:port::"
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/postgres-DIbPkZ:port::"
         },
         {
           "name": "DB_USER",
-          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/Porstgres-pZRPYB:username::"
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/postgres-DIbPkZ:username::"
         },
         {
           "name": "DB_PASSWORD",
-          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/Porstgres-pZRPYB:password::"
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/postgres-DIbPkZ:password::"
         },
         {
           "name": "SCIM_BASIC_USERNAME",
-          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/SCIM_BASIC_AUTH-rpctW1:SCIM_BASIC_USERNAME::"
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/scim-basic-auth-K3pm2a:username::"
         },
         {
           "name": "SCIM_BASIC_PASSWORD",
-          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/SCIM_BASIC_AUTH-rpctW1:SCIM_BASIC_PASSWORD::"
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:136337412719:secret:prod/brivo-scim-gateway/scim-basic-auth-K3pm2a:password::"
         }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/",
+          "awslogs-group": "/ecs/brivo-scim-gateway",
           "awslogs-create-group": "true",
           "awslogs-region": "eu-central-1",
           "awslogs-stream-prefix": "ecs"
