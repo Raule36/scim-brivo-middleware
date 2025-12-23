@@ -38,6 +38,26 @@ resource "aws_iam_role_policy" "ecs_secrets" {
   })
 }
 
+resource "aws_iam_role_policy" "ecs_logs" {
+  name = "${var.project_name}-logs-access"
+  role = aws_iam_role.ecs_task_execution.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "arn:aws:logs:${var.aws_region}:*:log-group:/ecs/${var.project_name}:*"
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role" "github_actions" {
   name = "github-actions-deploy"
 
@@ -104,5 +124,7 @@ resource "aws_iam_role_policy" "github_actions" {
     ]
   })
 }
+
+
 
 data "aws_caller_identity" "current" {}

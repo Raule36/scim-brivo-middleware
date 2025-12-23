@@ -19,6 +19,6 @@ variable "github_repo" {
 }
 
 variable "db_password" {
-  type = string
+  type      = string
   sensitive = true
 }
