@@ -42,13 +42,17 @@ export class BrivoMockClient implements BrivoApiClient {
     return dto;
   }
 
+  /**
+   * SCIM uses 1-based indexing (startIndex=1), Brivo uses 0-based offset.
+   * Transform: startIndex=1 → offset=0, startIndex=10 → offset=9
+   */
   public async getUsers(
     offset = 1,
     pageSize = 100,
     filter?: BrivoFilter,
   ): Promise<BrivoListDto<BrivoUserDto>> {
     const { total, items } = await this.userRepository.findAll(
-      Math.min(offset - 1, 0),
+      Math.max(offset - 1, 0),
       pageSize,
       filter,
     );
@@ -76,13 +80,17 @@ export class BrivoMockClient implements BrivoApiClient {
     return dto;
   }
 
+  /**
+   * SCIM uses 1-based indexing (startIndex=1), Brivo uses 0-based offset.
+   * Transform: startIndex=1 → offset=0, startIndex=10 → offset=9
+   */
   public async getGroups(
     offset = 1,
     pageSize = 100,
     filter?: BrivoFilter,
   ): Promise<BrivoListDto<BrivoGroupWithMembersDto>> {
     const { total, items } = await this.groupRepository.findAll(
-      Math.min(offset - 1, 0),
+      Math.max(offset - 1, 0),
       pageSize,
       filter,
     );
