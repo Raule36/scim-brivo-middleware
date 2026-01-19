@@ -1,9 +1,32 @@
+import path from 'node:path';
+
 import { DynamicModule, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as bodyParser from 'body-parser';
+import * as dotenv from 'dotenv';
+import { DataSource, DataSourceOptions } from 'typeorm';
 
-import { Env, validateEnv } from './config/env.schema';
+import { validateEnv } from './config/env.schema';
+
+dotenv.config();
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+const dataSourceOptions: DataSourceOptions = {
+  type: 'postgres',
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT || '5432', 10),
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  entities: [path.join(__dirname, '**/*.entity{.ts,.js}')],
+  migrations: [path.join(__dirname, 'core/migrations/*{.ts,.js}')],
+  logging: !isProduction,
+  ...(isProduction && {
+    ssl: { rejectUnauthorized: false },
+  }),
+};
 
 @Module({})
 export class CoreModule {
@@ -18,21 +41,12 @@ export class CoreModule {
         }),
         TypeOrmModule.forRootAsync({
           inject: [ConfigService],
-          useFactory: (config: ConfigService<Env, true>) => {
-            const isProduction = config.get('NODE_ENV') === 'production';
+          useFactory: () => {
             return {
-              type: 'postgres',
-              host: config.get('DB_HOST'),
-              port: config.get('DB_PORT'),
-              username: config.get('DB_USER'),
-              password: config.get('DB_PASSWORD'),
-              database: config.get('DB_NAME'),
+              ...dataSourceOptions,
               autoLoadEntities: true,
+              migrationsRun: true,
               synchronize: false,
-              logging: !isProduction,
-              ...(isProduction && {
-                ssl: { rejectUnauthorized: false },
-              }),
             };
           },
         }),
@@ -51,3 +65,5 @@ export class CoreModule {
       .forRoutes('*');
   }
 }
+
+export default new DataSource(dataSourceOptions);

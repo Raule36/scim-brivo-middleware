@@ -17,7 +17,12 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./src/core/core.module.ts",
+    "migration:generate": "npm run typeorm -- migration:generate",
+    "migration:create": "npm run typeorm -- migration:create",
+    "migration:run": "npm run typeorm migration:run -d ./src/core/core.module.ts",
+    "migration:revert": "npm run typeorm migration:revert -d ./src/core/core.module.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",
@@ -28,6 +33,7 @@
     "@nestjs/typeorm": "^11.0.0",
     "axios": "^1.13.2",
     "body-parser": "^2.2.0",
+    "dotenv": "^17.2.3",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
