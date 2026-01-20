@@ -22,3 +22,8 @@ variable "db_password" {
   type      = string
   sensitive = true
 }
+
+variable "image_tag" {
+  type = string
+  description = "Docker image tag (git SHA)"
+}
