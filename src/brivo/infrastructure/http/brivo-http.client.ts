@@ -11,7 +11,7 @@ import {
 import { HttpService } from '@nestjs/axios';
 import { Inject, Injectable } from '@nestjs/common';
 
-import { BrivoConfig, brivoConfig } from '../config';
+import { brivoConfig, BrivoHttpConfig } from '../config';
 import { BrivoBaseHttpClient } from './brivo-base-http.client';
 import { BrivoOAuthService } from './brivo-oauth.service';
 
@@ -20,7 +20,7 @@ export class BrivoHttpClient extends BrivoBaseHttpClient implements BrivoApiClie
   constructor(
     httpService: HttpService,
     @Inject(brivoConfig.KEY)
-    config: BrivoConfig,
+    config: BrivoHttpConfig,
     oauthService: BrivoOAuthService,
   ) {
     super(httpService, config, oauthService);

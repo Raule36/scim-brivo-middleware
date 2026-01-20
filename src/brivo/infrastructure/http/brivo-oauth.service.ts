@@ -4,7 +4,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { firstValueFrom } from 'rxjs';
 
-import { BrivoConfig, brivoConfig } from '../config';
+import { brivoConfig, BrivoHttpConfig } from '../config';
 
 interface TokenResponse {
   access_token: string;
@@ -25,7 +25,7 @@ export class BrivoOAuthService {
   constructor(
     private readonly httpService: HttpService,
     @Inject(brivoConfig.KEY)
-    private readonly config: BrivoConfig,
+    private readonly config: BrivoHttpConfig,
   ) {}
 
   async getAccessToken(): Promise<string> {
@@ -52,8 +52,8 @@ export class BrivoOAuthService {
     this.logger.log('Authenticating with Brivo API...');
     const tokenData = await this.requestToken({
       grant_type: 'password',
-      username: this.config.username,
-      password: this.config.password,
+      username: this.config.BRIVO_USERNAME,
+      password: this.config.BRIVO_PASSWORD,
     });
     this.setTokenData(tokenData);
     this.logger.log('Successfully authenticated with Brivo API');
@@ -75,14 +75,14 @@ export class BrivoOAuthService {
   }
 
   private async requestToken(body: Record<string, string | null>): Promise<TokenResponse> {
-    const url = `${this.config.authUrl}/oauth/token`;
-    const credentials = Buffer.from(`${this.config.clientId}:${this.config.clientSecret}`).toString(
-      'base64',
-    );
+    const url = `${this.config.BRIVO_AUTH_URL}/oauth/token`;
+    const credentials = Buffer.from(
+      `${this.config.BRIVO_CLIENT_ID}:${this.config.BRIVO_CLIENT_SECRET}`,
+    ).toString('base64');
 
     const headers = {
       'Authorization': `Basic ${credentials}`,
-      'api-key': this.config.apiKey,
+      'api-key': this.config.BRIVO_API_KEY,
       'Content-Type': 'application/x-www-form-urlencoded',
     };
 

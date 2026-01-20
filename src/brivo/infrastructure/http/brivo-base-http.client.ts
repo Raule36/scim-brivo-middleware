@@ -4,7 +4,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { AxiosError, AxiosRequestConfig } from 'axios';
 import { firstValueFrom } from 'rxjs';
 
-import { BrivoConfig, brivoConfig } from '../config';
+import { brivoConfig, BrivoHttpConfig } from '../config';
 import { BrivoOAuthService } from './brivo-oauth.service';
 
 interface BrivoErrorResponse {
@@ -18,7 +18,7 @@ export abstract class BrivoBaseHttpClient {
 
   constructor(
     protected readonly httpService: HttpService,
-    @Inject(brivoConfig.KEY) protected readonly config: BrivoConfig,
+    @Inject(brivoConfig.KEY) protected readonly config: BrivoHttpConfig,
     private readonly oauthService: BrivoOAuthService,
   ) {}
 
@@ -41,11 +41,11 @@ export abstract class BrivoBaseHttpClient {
   protected async request<T>(config: AxiosRequestConfig): Promise<T> {
     const accessToken = await this.oauthService.getAccessToken();
 
-    const url = `${this.config.apiUrl}/v1/api${config.url}`;
+    const url = `${this.config.BRIVO_API_URL}/v1/api${config.url}`;
     const headers = {
       ...config.headers,
       'Authorization': `Bearer ${accessToken}`,
-      'api-key': this.config.apiKey,
+      'api-key': this.config.BRIVO_API_KEY,
       'Content-Type': 'application/json',
     };
 
