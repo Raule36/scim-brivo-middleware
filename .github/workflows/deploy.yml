@@ -59,7 +59,7 @@ jobs:
         run: npm run test:coverage
 
       - name: Generate coverage badge
-        run: npm run coverage:badge
+        run: npm run test:badges
 
       - name: Commit and push changes
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
