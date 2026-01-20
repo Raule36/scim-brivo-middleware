@@ -26,7 +26,8 @@ resource "aws_ecs_task_definition" "app" {
       environment = [
         { name = "PORT", value = "3000" },
         { name = "NODE_ENV", value = "production" },
-        { name = "DB_NAME", value = "postgres" }
+        { name = "DB_NAME", value = "postgres" },
+        { name = "BRIVO_MODE", value = "mock" }
       ]
 
       secrets = [
