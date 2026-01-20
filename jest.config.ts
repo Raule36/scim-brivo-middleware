@@ -10,6 +10,11 @@ const config: Config = {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
   collectCoverageFrom: ['**/*.(t|j)s'],
+  coverageReporters: [
+    "json-summary",
+    "text",
+    "lcov"
+  ],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
 
