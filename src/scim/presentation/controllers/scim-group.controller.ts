@@ -9,6 +9,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -17,6 +18,7 @@ import {
 import { ScimGroupService } from '@scim/application';
 import {
   CreateScimGroupDto,
+  PatchGroupDto,
   ScimGroupDto,
   ScimGroupListDto,
   UpdateScimGroupDto,
@@ -51,6 +53,12 @@ export class ScimGroupController {
   @UsePipes(new ZodValidationPipe(s_CreateGroup))
   public create(@Body() body: CreateScimGroupDto): Promise<ScimGroupDto> {
     return this.groupService.create(body);
+  }
+
+  @Patch(':id')
+  @Header('Content-Type', 'application/scim+json')
+  public patch(@Param('id') id: string, @Body() body: PatchGroupDto): Promise<ScimGroupDto> {
+    return this.groupService.patch(id, body);
   }
 
   @Put(':id')

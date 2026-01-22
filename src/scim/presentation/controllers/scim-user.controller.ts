@@ -9,6 +9,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -19,6 +20,7 @@ import {
 import { ScimUserService } from '@scim/application';
 import {
   CreateScimUserDto,
+  PatchUserDto,
   ScimUserDto,
   ScimUserListDto,
   UpdateScimUserDto,
@@ -57,6 +59,12 @@ export class ScimUserController {
   @UsePipes(new ZodValidationPipe(s_CreateUser))
   public create(@Body() body: CreateScimUserDto): Promise<ScimUserDto> {
     return this.userService.create(body);
+  }
+
+  @Patch(':id')
+  @Header('Content-Type', 'application/scim+json')
+  public patch(@Param('id') id: string, @Body() body: PatchUserDto): Promise<ScimUserDto> {
+    return this.userService.patch(id, body);
   }
 
   @Put(':id')
