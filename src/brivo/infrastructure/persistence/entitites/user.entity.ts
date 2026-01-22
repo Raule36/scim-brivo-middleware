@@ -28,7 +28,7 @@ export class BrivoUserEntity {
   @Column({ type: 'text' })
   lastName!: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   middleName?: string | null;
 
   @CreateDateColumn({ type: 'timestamptz' })

@@ -19,11 +19,12 @@
     "test:badges": "npm run test:coverage && jest-coverage-badges",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./src/core/core.module.ts",
-    "migration:generate": "npm run typeorm -- migration:generate",
+    "typeorm": "npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "migration:run": "npm run typeorm -- -d ./src/core/data-source.ts migration:run",
+    "migration:revert": "npm run typeorm -- -d ./src/core/data-source.ts migration:revert",
     "migration:create": "npm run typeorm -- migration:create",
-    "migration:run": "npm run typeorm migration:run -d ./src/core/core.module.ts",
-    "migration:revert": "npm run typeorm migration:revert -d ./src/core/core.module.ts"
+    "migration:generate": "npm run typeorm -- migration:generate",
+    "migration:show": "npm run typeorm -- -d ./src/core/data-source.ts migration:show"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",
