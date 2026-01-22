@@ -23,7 +23,8 @@ export class OrmBrivoUserRepository implements BrivoUserRepository {
       throw new Error(`User with id ${id} not found`);
     }
     const partialEntity = BrivoUserEntity.toPartialEntity(dto);
-    const saved = this.repository.merge(existing, partialEntity);
+    const merged = this.repository.merge(existing, partialEntity);
+    const saved = await this.repository.save(merged);
     return saved.toDto();
   }
 
